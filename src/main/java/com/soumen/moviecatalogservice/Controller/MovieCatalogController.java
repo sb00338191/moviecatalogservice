@@ -25,11 +25,11 @@ public class MovieCatalogController {
 	public List<MovieCatalogModel> getMovieCatalog(@PathVariable(value="userid") int userid){
 		
 		
-		RatingList ratingList = restTemplate.getForObject("http://localhost:8082/users/" +userid, RatingList.class);
+		RatingList ratingList = restTemplate.getForObject("http://rating-info-service/users/" +userid, RatingList.class);
 		
 		return ratingList.getRatings().stream().map(rating -> {
 			
-		MovieInfo movieInfo = restTemplate.getForObject("http://localhost:8081/movieinfo/" +rating.getMovieid(), MovieInfo.class);
+		MovieInfo movieInfo = restTemplate.getForObject("http://movie-info-service/movieinfo/" +rating.getMovieid(), MovieInfo.class);
 		return new MovieCatalogModel(movieInfo.getMovieid(), movieInfo.getName(),rating.getRating());
 				
 		}).collect(Collectors.toList());
